@@ -1,0 +1,28 @@
+<!doctype html>
+<html ng-app="myApp">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js"></script>
+  <script>
+    angular.module('myApp', [])
+    .controller('MyController', ['$scope', function($scope) {
+      $scope.hoge = "";
+    }])
+    // 日本語入力時に確定を押さなくてもng-modelを更新するdirective
+    .directive('jpInput', ['$parse', function($parse) {
+      return {
+        priority: 2,
+        restrict: 'A',
+        compile: function(element) {
+          element.on('compositionstart', function(e) {
+            e.stopImmediatePropagation();
+          });
+        },
+      };
+    }]);
+  </script>
+  <body>
+    <div ng-controller="MyController">
+      <input type="text" ng-model="hoge" jp-input>
+      {{hoge}}
+    </div>
+  </body>
+</html>
